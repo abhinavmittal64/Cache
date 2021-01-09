@@ -8,10 +8,10 @@ public class Record {
     int value;
     Record left;
     Record right;
-    int loadTime;
+    long loadTime;
     long expiryTime;
 
-    public Record(int key, int value, int loadTime, long expiryTime) {
+    public Record(int key, int value, long loadTime, long expiryTime) {
         this.key = key;
         this.value = value;
         this.loadTime = loadTime;
@@ -32,5 +32,37 @@ public class Record {
     @Override
     public int hashCode() {
         return Objects.hash(key, value);
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public long getLoadTime() {
+        return loadTime;
+    }
+
+    public void setLoadTime(long loadTime) {
+        this.loadTime = loadTime;
+    }
+
+    public long getExpiryTime() {
+        return expiryTime;
+    }
+
+    public void setExpiryTime(long expiryTime) {
+        this.expiryTime = expiryTime;
     }
 }
