@@ -6,11 +6,11 @@ import com.test.interview.models.models.RecordDeque;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Cache {
+public class Cache<KEY,VALUE> {
 
     int size;
-    ConcurrentHashMap<Integer, Record> map;
-    RecordDeque recordDeque;
+    ConcurrentHashMap<KEY, Record<KEY,VALUE>> map;
+    RecordDeque<KEY,VALUE> recordDeque;
 
     public Cache(int size) {
         this.size = size;
@@ -18,14 +18,15 @@ public class Cache {
         this.recordDeque = new RecordDeque();
     }
 
-    public synchronized Integer get(int key){
-        Record record = map.get(key);
-        long currTime = System.currentTimeMillis() * 1000;
+    public synchronized VALUE get(KEY key){
+        Record<KEY,VALUE> record = map.get(key);
+        long currTime = System.currentTimeMillis() / 1000;
 
         if (record == null)
             return null;
         if(record.getLoadTime()+ record.getExpiryTime() < currTime) {
-            //Clean the cache up
+            //Clean the cache up. Can be done asynchronously.
+            cleanUpCache();
             return null;
         }
         else {
@@ -35,10 +36,10 @@ public class Cache {
 
     }
 
-    public synchronized void put(int key, int value, int expiryTime){
-        Record record = map.get(key);
+    public synchronized void put(KEY key, VALUE value, int expiryTime){
+        Record<KEY,VALUE> record = map.get(key);
 
-        long currTime = System.currentTimeMillis() * 1000;
+        long currTime = System.currentTimeMillis() / 1000;
 
         if(record!=null){
             record.setLoadTime(currTime);
@@ -60,7 +61,17 @@ public class Cache {
     }
 
     private void evictFromCache() {
-        Record record = recordDeque.deleteTail();
+        Record<KEY,VALUE> record = recordDeque.deleteTail();
         map.remove(record.getKey());
+    }
+
+    public void cleanUpCache() {
+        long currTime = System.currentTimeMillis() / 1000;
+        Record<KEY,VALUE> tail = recordDeque.getTail();
+        while(tail!=null){
+            if(tail.getLoadTime() + tail.getExpiryTime() < currTime)
+                recordDeque.deleteRecord(tail);
+            tail = tail.getLeft();
+        }
     }
 }

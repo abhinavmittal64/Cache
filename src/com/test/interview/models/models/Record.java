@@ -2,16 +2,16 @@ package com.test.interview.models.models;
 
 import java.util.Objects;
 
-public class Record {
+public class Record<KEY,VALUE> {
 
-    int key;
-    int value;
+    KEY key;
+    VALUE value;
     Record left;
     Record right;
     long loadTime;
     long expiryTime;
 
-    public Record(int key, int value, long loadTime, long expiryTime) {
+    public Record(KEY key, VALUE value, long loadTime, long expiryTime) {
         this.key = key;
         this.value = value;
         this.loadTime = loadTime;
@@ -34,19 +34,19 @@ public class Record {
         return Objects.hash(key, value);
     }
 
-    public int getKey() {
+    public KEY getKey() {
         return key;
     }
 
-    public void setKey(int key) {
+    public void setKey(KEY key) {
         this.key = key;
     }
 
-    public int getValue() {
+    public VALUE getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(VALUE value) {
         this.value = value;
     }
 
@@ -64,5 +64,21 @@ public class Record {
 
     public void setExpiryTime(long expiryTime) {
         this.expiryTime = expiryTime;
+    }
+
+    public Record getLeft() {
+        return left;
+    }
+
+    public void setLeft(Record left) {
+        this.left = left;
+    }
+
+    public Record getRight() {
+        return right;
+    }
+
+    public void setRight(Record right) {
+        this.right = right;
     }
 }

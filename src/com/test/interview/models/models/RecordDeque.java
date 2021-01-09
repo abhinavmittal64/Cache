@@ -1,20 +1,20 @@
 package com.test.interview.models.models;
 
-public class RecordDeque {
+public class RecordDeque<KEY,VALUE> {
 
-    Record head;
-    Record tail;
+    Record<KEY,VALUE> head;
+    Record<KEY,VALUE> tail;
 
     public RecordDeque() {
         this.head = null;
         this.tail = null;
     }
 
-    public void removeAndAddToHead(Record record){
+    public void removeAndAddToHead(Record<KEY,VALUE> record){
         deleteRecord(record);
         addToHead(record);
     }
-    public void addToHead(Record record) {
+    public void addToHead(Record<KEY,VALUE> record) {
 
         if(head == null) {
             head = tail = record;
@@ -29,8 +29,8 @@ public class RecordDeque {
         }
     }
 
-    public Record deleteTail() {
-        Record currTail = tail;
+    public Record<KEY,VALUE> deleteTail() {
+        Record<KEY,VALUE> currTail = tail;
         if(head == null) {
              return null;
         }
@@ -58,7 +58,7 @@ public class RecordDeque {
         }
     }
 
-    public void deleteRecord(Record record) {
+    public void deleteRecord(Record<KEY,VALUE> record) {
         if(record == head)
             deleteHead();
         else if(record == tail)
@@ -66,5 +66,21 @@ public class RecordDeque {
         else {
             record.left = record.right;
         }
+    }
+
+    public Record<KEY, VALUE> getHead() {
+        return head;
+    }
+
+    public void setHead(Record<KEY, VALUE> head) {
+        this.head = head;
+    }
+
+    public Record<KEY, VALUE> getTail() {
+        return tail;
+    }
+
+    public void setTail(Record<KEY, VALUE> tail) {
+        this.tail = tail;
     }
 }
